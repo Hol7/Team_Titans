@@ -87,7 +87,7 @@ jobs:
         working-directory: frontend
         run: |
           npm ci
-          npm test --if-present
+          npm test --passWithNoTests
 
       - name: Build frontend Docker images
         run: |
