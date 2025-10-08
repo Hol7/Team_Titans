@@ -1,26 +1,26 @@
 FROM python:3.12-slim
 
-# Dossier de travail
 WORKDIR /app
 
-# Copier les dépendances
-COPY requirements.txt .
-
-# Installer les dépendances système nécessaires pour MySQL
+# 🧱 Installer les dépendances système nécessaires à mysqlclient et netcat
 RUN apt-get update && apt-get install -y \
+    build-essential \
     pkg-config \
     default-libmysqlclient-dev \
-    gcc \
-    && pip install --upgrade pip \
-    && pip install -r requirements.txt \
-    && apt-get clean \
+    netcat-traditional \
     && rm -rf /var/lib/apt/lists/*
 
-# Copier le code
+# 🐍 Installer les dépendances Python
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+
+# Copier le code du backend
 COPY . .
 
-# Exposer le port Django
 EXPOSE 8000
 
-# Commande de démarrage
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# 🕒 Attente MySQL + migration + lancement du serveur
+CMD ["bash", "-c", "echo '⏳ Waiting for MySQL to be ready...'; \
+    while ! nc -z $MYSQL_HOST 3306; do sleep 2; done; \
+    echo '✅ MySQL is up! Starting Django...'; \
+    python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
