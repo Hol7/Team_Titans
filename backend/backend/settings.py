@@ -11,21 +11,26 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-aj^wm+wn!loif2p7ynlyf73c2j5t*@sqkv)!c73w)&v32leg3h'
+SECRET_KEY = os.getenv('SECRET_KEY') or 'django-insecure-aj^wm+wn!loif2p7ynlyf73c2j5t*@sqkv)!c73w)&v32leg3h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -38,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'app.accounts',
     'app.attendance',
     'app.reports',
@@ -133,8 +138,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -146,5 +150,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
-# Custom user model
-AUTH_USER_MODEL = 'accounts.User'
+# JWT Configuration
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv('JWT_ACCESS_TOKEN_LIFETIME_MINUTES') or '60')),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.getenv('JWT_REFRESH_TOKEN_LIFETIME_DAYS') or '7')),
+    'ROTATE_REFRESH_TOKENS': (os.getenv('JWT_ROTATE_REFRESH_TOKENS') or 'True').lower() in ('true', '1', 'yes'),
+    'BLACKLIST_AFTER_ROTATION': (os.getenv('JWT_BLACKLIST_AFTER_ROTATION') or 'True').lower() in ('true', '1', 'yes'),
+}
