@@ -16,10 +16,10 @@ __pycache__/
 *.sh
 
 # vs code
-.vscode
+.vscode/
 
 # django
-migrations
+migrations/
 
 # temp files
 *.csv
