@@ -1,10 +1,10 @@
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Time Management';
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1/auth';
 
 // Routes
 export const ROUTES = {
   AUTH: {
-    LOGIN: '/login',
+    LOGIN: '/login/',
   },
   DASHBOARD: {
     HOME: '/dashboard',

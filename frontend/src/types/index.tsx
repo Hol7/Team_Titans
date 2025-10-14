@@ -5,7 +5,7 @@ export interface User {
     lastName: string;
     email: string;
     phone: string;
-    role: 'employee' | 'manager';
+    role: 'employee' | 'manager' | 'admin';
     teamId?: string;
     createdAt: string;
     updatedAt: string;
@@ -17,7 +17,7 @@ export interface User {
     email: string;
     phone: string;
     password: string;
-    role: 'employee' | 'manager';
+    role: 'employee' | 'manager' | 'admin';
     teamId?: string;
   }
   
@@ -30,7 +30,7 @@ export interface User {
   
   // Auth Types
   export interface LoginDto {
-    email: string;
+    username: string;
     password: string;
   }
   

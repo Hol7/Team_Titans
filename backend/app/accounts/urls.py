@@ -6,7 +6,7 @@ app_name = 'accounts'
 
 urlpatterns = [
     # Authentication endpoints
-    path('login/', views.login_view, name='login'),
+    path('login', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('profile/', views.profile_view, name='profile'),
