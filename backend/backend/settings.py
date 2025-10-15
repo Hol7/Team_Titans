@@ -62,6 +62,12 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
+# CORS Settings (for frontend)
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3030',
+    'http://localhost:8000',
+]
+
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
