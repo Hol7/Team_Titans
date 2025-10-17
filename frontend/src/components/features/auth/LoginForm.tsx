@@ -13,7 +13,7 @@ export const LoginForm = () => {
 
   const formik = useFormik<LoginFormValues>({
     initialValues: {
-      email: '',
+      username: '',
       password: '',
     },
     validationSchema: toFormikValidationSchema(loginSchema),
@@ -25,15 +25,15 @@ export const LoginForm = () => {
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-5">
       <Input
-        label="Email"
-        type="email"
-        name="email"
-        placeholder="votre.email@example.com"
+        label="username"
+        type="text"
+        name="username"
+        placeholder="votre username"
         leftIcon={<Icon icon="mdi:email-outline" className="w-5 h-5" />}
-        value={formik.values.email}
+        value={formik.values.username}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.email && formik.errors.email ? formik.errors.email : undefined}
+        // error={formik.touched.email && formik.errors.email ? formik.errors.email : undefined}
         disabled={loginMutation.isPending}
       />
 
