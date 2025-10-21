@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import MarkArrivalView, MarkDepartureView, EmployeeStatusView
+from .views import mark_arrival, mark_departure, employee_status
 
 urlpatterns = [
-    path("arrival/", MarkArrivalView.as_view(), name="mark-arrival"),
-    path("departure/", MarkDepartureView.as_view(), name="mark-departure"),
-    path("status/", EmployeeStatusView.as_view(), name="employee-status"),
+    path("arrival/", mark_arrival, name="mark-arrival"),
+    path("departure/", mark_departure, name="mark-departure"),
+    path("status/", employee_status, name="employee-status"),
 ]
