@@ -7,10 +7,10 @@ class AccountsConfig(AppConfig):
     name = 'app.accounts'
 
     def ready(self):
-        # Create default admin user when Django starts
-        self.create_default_admin()
+        # Create default GCA user when Django starts
+        self.create_default_gca()
 
-    def create_default_admin(self):
+    def create_default_gca(self):
         try:
             # Load .env file
             load_dotenv()
@@ -18,40 +18,40 @@ class AccountsConfig(AppConfig):
             from .models import User
             from django.db import transaction
             
-            # Only create admin if no admin exists
-            if not User.objects.filter(role=User.Role.ADMIN).exists():
+            # Only create GCA if no GCA exists
+            if not User.objects.filter(role=User.Role.GCA).exists():
                 
-                # Get admin credentials from environment
-                admin_username = os.getenv('ADMIN_USERNAME')
-                admin_email = os.getenv('ADMIN_EMAIL')
-                admin_password = os.getenv('ADMIN_PASSWORD')
-                admin_first_name = os.getenv('ADMIN_FIRST_NAME')
-                admin_last_name = os.getenv('ADMIN_LAST_NAME')
-                admin_phone = os.getenv('ADMIN_PHONE')
+                # Get GCA credentials from environment
+                gca_username = os.getenv('GCA_USERNAME')
+                gca_email = os.getenv('GCA_EMAIL')
+                gca_password = os.getenv('GCA_PASSWORD')
+                gca_first_name = os.getenv('GCA_FIRST_NAME')
+                gca_last_name = os.getenv('GCA_LAST_NAME')
+                gca_phone = os.getenv('GCA_PHONE')
 
                 # Validate required fields
-                if not all([admin_username, admin_email, admin_password, admin_first_name, admin_last_name]):
-                    print("⚠️  Missing required admin credentials in .env file")
-                    print("Required: ADMIN_USERNAME, ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_FIRST_NAME, ADMIN_LAST_NAME")
+                if not all([gca_username, gca_email, gca_password, gca_first_name, gca_last_name]):
+                    print("⚠️  Missing required GCA credentials in .env file")
+                    print("Required: GCA_USERNAME, GCA_EMAIL, GCA_PASSWORD, GCA_FIRST_NAME, GCA_LAST_NAME")
                     return
 
-                # Create admin user in a transaction
+                # Create GCA user in a transaction
                 with transaction.atomic():
-                    admin_user = User.objects.create_user(
-                        username=admin_username,
-                        email=admin_email,
-                        password=admin_password,
-                        firstName=admin_first_name,
-                        lastName=admin_last_name,
-                        phoneNumber=admin_phone or '',
-                        role=User.Role.ADMIN,
+                    gca_user = User.objects.create_user(
+                        username=gca_username,
+                        email=gca_email,
+                        password=gca_password,
+                        firstName=gca_first_name,
+                        lastName=gca_last_name,
+                        phoneNumber=gca_phone or '',
+                        role=User.Role.GCA,
                         is_staff=True,
                         is_superuser=True
                     )
                     
-                print(f"✅ Default admin created: {admin_user.email} (username: {admin_user.username})")
+                print(f"✅ Default GCA created: {gca_user.email} (username: {gca_user.username})")
                 
         except Exception as e:
             # Print error for debugging, but don't crash the app
-            print(f"⚠️  Could not create default admin: {str(e)}")
+            print(f"⚠️  Could not create default GCA: {str(e)}")
             pass

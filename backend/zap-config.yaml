@@ -1,0 +1,145 @@
+# OWASP ZAP Configuration for TMTT
+# Configuration pour tests de sécurité automatisés
+
+# Global Settings
+env:
+  contexts:
+    - name: "TMTT API"
+      urls:
+        - "http://localhost:8000/api/v1/.*"
+      includePaths:
+        - "http://localhost:8000/api/v1/.*"
+      excludePaths:
+        - "http://localhost:8000/admin/.*"
+        - "http://localhost:8000/static/.*"
+        - "http://localhost:8000/media/.*"
+      authentication:
+        method: "bearer"
+        parameters:
+          token: "${AUTH_TOKEN}"
+      
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
+
+# Jobs Configuration
+jobs:
+  - type: spider
+    name: "Spider API Endpoints"
+    parameters:
+      context: "TMTT API"
+      url: "http://localhost:8000/api/v1/"
+      maxDuration: 10
+      maxDepth: 5
+      maxChildren: 10
+
+  - type: passiveScan-wait
+    name: "Wait for Passive Scan"
+    parameters:
+      maxDuration: 5
+
+  - type: activeScan
+    name: "Active Security Scan"
+    parameters:
+      context: "TMTT API"
+      url: "http://localhost:8000/api/v1/"
+      maxRuleDuration: 5
+      maxScanDuration: 30
+      policy: "API-Minimal"
+      
+  - type: passiveScan-wait
+    name: "Wait for Final Passive Scan"
+    parameters:
+      maxDuration: 5
+
+  - type: report
+    name: "Generate HTML Report"
+    parameters:
+      template: "traditional-html"
+      reportDir: "zap-reports"
+      reportFile: "zap-security-report.html"
+      reportTitle: "TMTT Security Scan Report"
+      reportDescription: "Automated security scan using OWASP ZAP"
+
+  - type: report
+    name: "Generate JSON Report"
+    parameters:
+      template: "traditional-json"
+      reportDir: "zap-reports"
+      reportFile: "zap-security-report.json"
+
+# Alert Filters
+alertFilters:
+  - ruleId: 10021  # X-Content-Type-Options Header Missing
+    newRisk: "Info"
+  - ruleId: 10020  # X-Frame-Options Header Not Set
+    newRisk: "Info"
+
+# Scan Policy
+scanPolicy:
+  name: "API-Minimal"
+  description: "Security scan policy for REST APIs"
+  scanner:
+    level: "MEDIUM"
+    strength: "MEDIUM"
+  
+  # Règles activées
+  rules:
+    # Injection
+    - id: 40018  # SQL Injection
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    - id: 40019  # SQL Injection - MySQL
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    - id: 40020  # SQL Injection - Hypersonic SQL
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    - id: 40021  # SQL Injection - Oracle
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    - id: 40022  # SQL Injection - PostgreSQL
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    
+    # XSS
+    - id: 40012  # Cross Site Scripting (Reflected)
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    - id: 40014  # Cross Site Scripting (Persistent)
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    - id: 40016  # Cross Site Scripting (Persistent) - Prime
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    - id: 40017  # Cross Site Scripting (Persistent) - Spider
+      strength: "HIGH"
+      threshold: "MEDIUM"
+    
+    # Authentication
+    - id: 10055  # CSP Scanner
+      strength: "MEDIUM"
+      threshold: "MEDIUM"
+    - id: 10098  # Cross-Domain Misconfiguration
+      strength: "MEDIUM"
+      threshold: "MEDIUM"
+    
+    # Information Disclosure
+    - id: 10096  # Timestamp Disclosure
+      strength: "LOW"
+      threshold: "LOW"
+    - id: 10095  # Backup File Disclosure
+      strength: "MEDIUM"
+      threshold: "MEDIUM"
+    
+    # Security Headers
+    - id: 10021  # X-Content-Type-Options Header Missing
+      strength: "LOW"
+      threshold: "LOW"
+    - id: 10020  # X-Frame-Options Header Not Set
+      strength: "MEDIUM"
+      threshold: "MEDIUM"
+    - id: 10035  # Strict-Transport-Security Header Not Set
+      strength: "MEDIUM"
+      threshold: "MEDIUM"

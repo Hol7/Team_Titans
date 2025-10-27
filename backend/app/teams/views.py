@@ -8,13 +8,13 @@ from .serializers import TeamSerializer
 User = get_user_model()
 
 # ============================================
-# 🔹 ADMIN ACTIONS
+# 🔹 GCA/CA ACTIONS
 # ============================================
 
 @api_view(["GET"])
 @permission_classes([permissions.IsAdminUser])
 def list_teams(request):
-    """List all teams (admin only)"""
+    """List all teams"""
     teams = Team.objects.all()
     serializer = TeamSerializer(teams, many=True)
     return Response({"message": "Teams retrieved successfully.", "data": serializer.data})
@@ -23,7 +23,7 @@ def list_teams(request):
 @api_view(["POST"])
 @permission_classes([permissions.IsAdminUser])
 def create_team(request):
-    """Create a new team (admin only)"""
+    """Create a new team"""
     serializer = TeamSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -34,7 +34,7 @@ def create_team(request):
 @api_view(["POST"])
 @permission_classes([permissions.IsAdminUser])
 def assign_manager(request, team_id):
-    """Assign a manager to a specific team (admin only)"""
+    """Assign a manager to a specific team"""
     try:
         team = Team.objects.get(id=team_id)
     except Team.DoesNotExist:
@@ -60,7 +60,7 @@ def assign_manager(request, team_id):
 @api_view(["POST"])
 @permission_classes([permissions.IsAdminUser])
 def remove_manager(request, team_id):
-    """Remove a manager from a team (admin only)"""
+    """Remove a manager from a team"""
     try:
         team = Team.objects.get(id=team_id)
     except Team.DoesNotExist:

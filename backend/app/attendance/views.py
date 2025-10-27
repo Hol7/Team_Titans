@@ -53,10 +53,10 @@ def mark_departure(request):
     return Response({"message": "Departure successfully recorded."}, status=status.HTTP_201_CREATED)
 
 
-# 🔹 Get Employee Status
+# 🔹 Get User Status
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def employee_status(request):
+def user_status(request):
     today = timezone.now().date()
     data = []
 
@@ -87,6 +87,6 @@ def employee_status(request):
         })
 
     return Response(
-        {"message": "Employee status retrieved successfully.", "data": data},
+        {"message": "User status retrieved successfully.", "data": data},
         status=status.HTTP_200_OK
     )
