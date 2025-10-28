@@ -1,4 +1,4 @@
-# 🏆 Team Titans - TMTT Project
+# Team Titans - TMTT Project
 
 **Team Management & Time Tracking - Plateforme complète de gestion d'équipes**
 
@@ -9,7 +9,7 @@
 
 ---
 
-## 📋 Vue d'ensemble
+## Vue d'ensemble
 
 TMTT est une plateforme full-stack pour la gestion d'équipes et le suivi de présence avec un système de sécurité avancé basé sur la matrice RACI.
 
@@ -23,7 +23,7 @@ Team_Titans/
 └── docker-compose.yml
 ```
 
-### ✨ Caractéristiques principales
+### Caractéristiques principales
 
 - **Backend Django** - API REST sécurisée avec 6 rôles RACI
 - **Frontend React** - Interface utilisateur moderne
@@ -34,7 +34,7 @@ Team_Titans/
 
 ---
 
-## 🚀 Démarrage Rapide
+## Démarrage Rapide
 
 ### Prérequis
 
@@ -47,8 +47,8 @@ Team_Titans/
 
 ```bash
 # Cloner le repository
-git clone <repo-url>
-cd Team_Titans
+git clone https://github.com/EpitechMscProPromo2027/T-DEV-700-project-COT_2.git
+cd T-DEV-700-project-COT_2
 
 # Démarrer les services
 docker-compose up --build
