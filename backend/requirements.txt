@@ -4,6 +4,9 @@ Django
 djangorestframework
 python-dotenv
 
+# API Documentation
+drf-spectacular
+
 # CORS Support
 django-cors-headers
 

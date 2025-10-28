@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',  # Pour le blacklisting des tokens
+    'drf_spectacular',  # API Documentation
     'defender',  # Protection brute force
     'axes',      # Suivi des authentifications
     'app.accounts',
