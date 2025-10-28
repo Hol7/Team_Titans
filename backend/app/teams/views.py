@@ -8,7 +8,7 @@ from .serializers import TeamSerializer
 User = get_user_model()
 
 # ============================================
-# 🔹 GCA/CA ACTIONS
+# GCA/CA ACTIONS
 # ============================================
 
 @api_view(["GET"])
