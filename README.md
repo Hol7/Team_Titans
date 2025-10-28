@@ -16,7 +16,7 @@ TMTT est une plateforme full-stack pour la gestion d'équipes et le suivi de pr�
 ### 🏗 Architecture
 
 ```
-Team_Titans/
+T-DEV-700-project-COT_2/
 ├── backend/          # API Django REST avec sécurité RACI
 ├── frontend/         # Interface React
 ├── .github/          # CI/CD GitHub Actions
@@ -43,20 +43,21 @@ Team_Titans/
 - Docker & Docker Compose
 - Git Flow
 
-### Installation locale avec Docker
+### Installation locale 
 
 ```bash
 # Cloner le repository
 git clone https://github.com/EpitechMscProPromo2027/T-DEV-700-project-COT_2.git
 cd T-DEV-700-project-COT_2
-
+```
+### Avec Docker (pas encore disponible)
+```bash
 # Démarrer les services
 docker-compose up --build
 
 # Backend disponible sur : http://localhost:8000
 # Frontend disponible sur : http://localhost:3000
 ```
-
 ### Installation manuelle
 
 #### Backend
