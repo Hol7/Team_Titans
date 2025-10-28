@@ -1,58 +1,78 @@
-version: "3.9"
-
 services:
   db:
-    image: mysql:8.3
-    container_name: mysql_dev
-    restart: always
+    image: postgres:15
+    container_name: postgres_db
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: bootstrap
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tmtt_db
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
+      - db_data:/var/lib/postgresql/data
+    networks:  
+      - dev_network
+    restart: always
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@tmtt.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      - dev_network
+    restart: always 
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
-    container_name: django_dev
+    #entrypoint: /app/entrypoint.sh
+    container_name: django_backend
     command: >
-      sh -c "
-      echo '⏳ Waiting for MySQL to be ready...' &&
-      until nc -z db 3306; do sleep 2; done &&
-      echo '✅ MySQL is up, starting Django...' &&
-      python manage.py migrate &&
-      python manage.py runserver 0.0.0.0:8000
-      "
-    ports:
-      - "8000:8000"
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./backend:/app
-    environment:
-      MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_DATABASE: bootstrap
+    ports:
+      - "8000:8000"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+    networks:
+      - dev_network
+    restart: always  
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
-    container_name: react_dev
+    container_name: frontend_app
+    command: >
+      sh -c "npm install && npm run dev"
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
-      - "3000:3000"
+      - "3030:3030"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1/auth
     depends_on:
       - backend
+    networks:
+      - dev_network
+    restart: always 
 
 volumes:
   db_data:
+  pgadmin_data:
+
+networks:
+  dev_network:
+    driver: bridge

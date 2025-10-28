@@ -22,6 +22,7 @@ class Ticket(models.Model):
         choices=PresenceStatus.choices,
         default=PresenceStatus.ABSENT
     )
+    is_late = models.BooleanField(default=False)  # 🔹 New field
 
     class Meta:
         unique_together = ("user", "date", "status")

@@ -4,39 +4,47 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from datetime import time
 from .models import Ticket
 
 User = get_user_model()
 
+# 🔹 Define the lateness threshold (08:30)
+LATE_THRESHOLD = time(8, 30)
 
-# 🔹 Mark Arrival
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def mark_arrival(request):
     user = request.user
-    today = timezone.now().date()
+    now = timezone.localtime()
+    today = now.date()
 
     if Ticket.objects.filter(user=user, date=today, status=Ticket.PresenceStatus.ARRIVAL).exists():
         return Response({"message": "Arrival already recorded.", "errors": ["Duplicate arrival"]},
                         status=status.HTTP_400_BAD_REQUEST)
 
+    # Determine if the user is late
+    is_late = now.time() > LATE_THRESHOLD
+
     Ticket.objects.create(
         user=user,
         status=Ticket.PresenceStatus.ARRIVAL,
-        presence_status=Ticket.PresenceStatus.PRESENT
+        presence_status=Ticket.PresenceStatus.PRESENT,
+        is_late=is_late
     )
 
-    return Response({"message": "Arrival successfully recorded."}, status=status.HTTP_201_CREATED)
+    if is_late:
+        return Response({"message": "Arrival recorded — You are late."}, status=status.HTTP_201_CREATED)
+    return Response({"message": "Arrival recorded on time."}, status=status.HTTP_201_CREATED)
 
 
-# 🔹 Mark Departure
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def mark_departure(request):
     user = request.user
     today = timezone.now().date()
 
-    # Must have arrival before departure
     if not Ticket.objects.filter(user=user, date=today, status=Ticket.PresenceStatus.ARRIVAL).exists():
         return Response({"message": "You must mark arrival first."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -53,7 +61,6 @@ def mark_departure(request):
     return Response({"message": "Departure successfully recorded."}, status=status.HTTP_201_CREATED)
 
 
-# 🔹 Get Employee Status
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def employee_status(request):
@@ -84,6 +91,7 @@ def employee_status(request):
             "user": user.email,
             "status": status_display,
             "last_update": last_update,
+            "is_late": arrival_ticket.is_late if arrival_ticket else False  # 🔹 Add lateness info
         })
 
     return Response(
