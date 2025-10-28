@@ -1,4 +1,4 @@
-# �� TMTT Backend - Documentation Complète
+# TMTT Backend - Documentation Complète
 
 **Team Management & Time Tracking - API Backend Django**
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 📋 Table des Matières
+## Table des Matières
 
 - [Vue d'ensemble](#-vue-densemble)
 - [Caractéristiques](#-caractéristiques)
@@ -128,10 +128,6 @@ backend/
 ### 1️⃣ Première Installation
 
 ```bash
-# Cloner le repository
-git clone <repository-url>
-cd Team_Titans/backend
-
 # Créer un environnement virtuel
 python3.11 -m venv venv
 
@@ -141,7 +137,8 @@ source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 
 # Installer les dépendances
-pip install -r requirements.txt
+pip install uv
+uv pip install -r requirements.txt
 ```
 
 ### 2️⃣ Configuration de l'Environnement
@@ -157,45 +154,6 @@ nano .env
 ```
 
 **⚠️ Important :** Le fichier `.env` contient des données sensibles et ne doit JAMAIS être commit dans Git (déjà dans `.gitignore`).
-
-**Variables importantes :**
-
-```bash
-# Django
-SECRET_KEY=votre-clé-secrète-unique
-DEBUG=True  # False en production !
-ALLOWED_HOSTS=localhost,127.0.0.1
-
-# Database (Production - PostgreSQL recommandé)
-DATABASE_ENGINE=django.db.backends.postgresql
-DATABASE_NAME=tmtt_prod
-DATABASE_USER=tmtt_user
-DATABASE_PASSWORD=votre-mot-de-passe-securise
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-
-# Admin GCA (créé automatiquement)
-GCA_USERNAME=gca
-GCA_EMAIL=gca@tmtt.com
-GCA_PASSWORD=GCA123456!
-GCA_FIRST_NAME=GCA
-GCA_LAST_NAME=User
-GCA_PHONE=0145456598
-
-# JWT Tokens
-JWT_ACCESS_TOKEN_LIFETIME_MINUTES=60
-JWT_REFRESH_TOKEN_LIFETIME_DAYS=7
-JWT_ROTATE_REFRESH_TOKENS=True
-JWT_BLACKLIST_AFTER_ROTATION=True
-
-# CORS (frontend)
-CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
-
-# Sécurité Production
-# SECURE_SSL_REDIRECT=True
-# SESSION_COOKIE_SECURE=True
-# CSRF_COOKIE_SECURE=True
-```
 
 ### 3️⃣ Setup Base de Données
 
@@ -225,7 +183,7 @@ chmod 644 logs/*.log
 python manage.py runserver
 
 # Le serveur démarre sur http://127.0.0.1:8000
-# Admin GCA créé automatiquement : gca / GCA123456!
+# Admin GCA créé automatiquement
 ```
 
 ---
