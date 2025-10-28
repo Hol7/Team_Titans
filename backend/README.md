@@ -207,7 +207,7 @@ python manage.py runserver
 |----------------|:---:|:--:|:-------:|:-----:|:----:|:------:|
 | Gestion comptes | **R** | | | | | I |
 | Gestion équipes | A | **R** | | | | I |
-| Pointage | | | **R** | I | | |
+| Pointage |**R** |**R** | **R** | **RI** |**R**|**R**|
 | Gestion membres team | | | | **R** | I | |
 | Visualisation rapports | | | | | **R** | I |
 | Gestion logs | | | | | | **R** |
