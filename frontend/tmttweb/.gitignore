@@ -1,0 +1,109 @@
+# ===============================================Backend==============================
+
+# environments
+venv
+.env
+.env.local
+.env.production
+.env.*.local
+
+# cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# test
+*test*
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# database
+*.sqlite3
+*.db
+
+# shell
+*.sh
+
+# vs code
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# django
+migrations/
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Security and logs
+logs/
+*.log
+security.log
+django.log
+zap-reports/
+bandit-report.json
+safety-report.json
+trivy-report.json
+snyk-*.json
+
+# Media and static
+media/
+staticfiles/
+static_collected/
+
+# temp files
+*.csv
+*.bak
+*.tmp
+
+# Secrets (ne jamais commit)
+secrets/
+*.key
+*.pem
+*.crt
+*.pfx
+
+
+# ========================================Frontend============================
+node_modules
+
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
