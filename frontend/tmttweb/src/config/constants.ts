@@ -3,8 +3,14 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000
 
 // Routes
 export const ROUTES = {
+  WELCOME: '/welcome',
+  ROLE_SELECTION: '/role-selection',
   AUTH: {
     LOGIN: '/login/',
+  },
+  VISITOR: {
+    CLOCK_IN: '/visitor/clock-in',
+    CLOCK_OUT: '/visitor/clock-out',
   },
   DASHBOARD: {
     HOME: '/dashboard',
@@ -82,6 +88,7 @@ export const QUERY_KEYS = {
 export const STORAGE_KEYS = {
   AUTH_TOKEN: 'auth_token',
   USER: 'user',
+  FIRST_VISIT: 'tmtt_first_visit',
 } as const;
 
 // Roles
@@ -110,3 +117,14 @@ export const PAGINATION = {
   DEFAULT_LIMIT: 10,
   LIMITS: [10, 25, 50, 100],
 } as const;
+
+// Visit Reasons
+export const VISIT_REASONS = [
+  { value: 'meeting', label: 'Réunion' },
+  { value: 'delivery', label: 'Livraison' },
+  { value: 'interview', label: 'Entretien' },
+  { value: 'commercial', label: 'Visite commerciale' },
+  { value: 'maintenance', label: 'Maintenance' },
+  { value: 'training', label: 'Formation' },
+  { value: 'other', label: 'Autre' },
+] as const;

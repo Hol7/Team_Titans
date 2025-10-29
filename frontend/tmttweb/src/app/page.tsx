@@ -1,21 +1,37 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/authStore';
-import { ROUTES } from '@/config/constants';
+import { ROUTES, STORAGE_KEYS } from '@/config/constants';
 
 export default function HomePage() {
   const router = useRouter();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    // Check if this is the first visit
+    const hasVisited = localStorage.getItem(STORAGE_KEYS.FIRST_VISIT);
+
+    if (hasVisited === null || hasVisited === 'true') {
+      // First time visitor - show welcome page
+      localStorage.setItem(STORAGE_KEYS.FIRST_VISIT, 'true');
+      router.push(ROUTES.WELCOME);
+    } else if (isAuthenticated) {
+      // Authenticated user - go to dashboard
       router.push(ROUTES.DASHBOARD.HOME);
     } else {
-      router.push(ROUTES.AUTH.LOGIN);
+      // Returning visitor, not authenticated - show role selection
+      router.push(ROUTES.ROLE_SELECTION);
     }
+
+    setIsLoading(false);
   }, [isAuthenticated, router]);
+
+  if (!isLoading) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
