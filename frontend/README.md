@@ -1,23 +1,34 @@
-# Projet de Gestion d'Événements & Pointage Mobile
+# TM-TT – Pointage & Gestion d'Équipe
 
-Ce projet est divisé en **deux applications interconnectées** :
+**Votre application permet aux employés d'enregistrer leurs arrivées et départs, et aux managers de gérer les équipes et de visualiser les indicateurs clés de performance (KPI) des membres de l'entreprise.**
 
----
-
-## 1. **Application Web** – [Lien vers le README Web](https://github.com/EpitechMscProPromo2027/T-DEV-700-project-COT_2/blob/develop/frontend/tmttweb/README.md)  
-Plateforme complète pour **organiser des événements** (publics ou privés) avec billetterie (concerts, soirées chill, etc.) et **gérer des concours de vote** (miss, élections, etc.).  
-Les utilisateurs peuvent créer, vendre des tickets, voter de manière sécurisée, et suivre les résultats en temps réel.
-
-→ [Lire le README du Web](https://github.com/EpitechMscProPromo2027/T-DEV-700-project-COT_2/blob/develop/frontend/tmttweb/README.md)
+Elle se compose de **deux principaux composants** :
 
 ---
 
-## 2. **Application Mobile (Expo)** – [Lien vers le README Mobile](https://github.com/EpitechMscProPromo2027/T-DEV-700-project-COT_2/blob/develop/frontend/tmttmobile/README.md)  
-Application mobile native (iOS & Android) développée avec **Expo**.  
-Permet aux employés de **pointer leur arrivée/départ via scan QR + biométrie**, et aux managers de **suivre les présences et KPI** en temps réel.
+## 1. **Application Web**  
+→ [Lire le README Web](https://github.com/EpitechMscProPromo2027/T-DEV-700-project-COT_2/blob/develop/frontend/tmttweb/README.md)  
+Interface complète pour les **managers** :  
+- Gestion des équipes  
+- Création de compte    
+- Clock-in / Clock-out visiteur
+- Suivi en temps réel des pointages 
+- Tableaux de bord KPI (retards, heures, présence...)
 
-→ [Lire le README du Mobile](https://github.com/EpitechMscProPromo2027/T-DEV-700-project-COT_2/blob/develop/frontend/tmttmobile/README.md)
 
 ---
 
-> **Architecture globale** : Le web gère l’organisation et la diffusion, le mobile assure le pointage terrain ultra-rapide et sécurisé.
+## 2. **Application Mobile (Expo)**  
+→ [Lire le README Mobile](https://github.com/EpitechMscProPromo2027/T-DEV-700-project-COT_2/blob/develop/frontend/tmttmobile/README.md)  
+Application native pour **employés** :  
+- Connexion sécurisée  
+- Scan QR code sur site  
+- Validation biométrique (empreinte/face) ou manuelle  
+- Clock-in / Clock-out instantané
+
+---
+
+
+
+
+
