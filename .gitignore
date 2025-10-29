@@ -3,28 +3,71 @@
 # environments
 venv
 .env
-
+.env.local
+.env.production
+.env.*.local
 
 # cache
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
 
 # test
 *test*
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
 
 # database
 *.sqlite3
+*.db
 
 # shell
 *.sh
 
 # vs code
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # django
 migrations/
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Security and logs
+logs/
+*.log
+security.log
+django.log
+zap-reports/
+bandit-report.json
+safety-report.json
+trivy-report.json
+snyk-*.json
+
+# Media and static
+media/
+staticfiles/
+static_collected/
 
 # temp files
 *.csv
+*.bak
+*.tmp
+
+# Secrets (ne jamais commit)
+secrets/
+*.key
+*.pem
+*.crt
+*.pfx
 
 
 # ========================================Frontend============================

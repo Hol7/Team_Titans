@@ -11,7 +11,7 @@ urlpatterns = [
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('profile', views.profile_view, name='profile'),
         
-    # User management endpoints (admin only)
+    # User management endpoints
     path('users', views.UserListView.as_view(), name='user_list'),
     path('users/create', views.create_user, name='create_user'),
     path('users/import-csv', views.import_users_csv, name='import_users_csv'),

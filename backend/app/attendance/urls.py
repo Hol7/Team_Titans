@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import mark_arrival, mark_departure, employee_status
+from .views import mark_arrival, mark_departure, user_status
 
 urlpatterns = [
     path("arrival", mark_arrival, name="mark-arrival"),
