@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,50 +10,56 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Brand colors
+        brand: {
+          white: "#FFFFFF",
+          purple: "#311C3B",
+          light: "#F8F7FA",
+          dark: "#1A0F21",
+        },
+        // Primary palette (purple-based)
         primary: {
-          50: "#E3F2FD",
-          100: "#BBDEFB",
-          200: "#90CAF9",
-          300: "#64B5F6",
-          400: "#42A5F5",
-          500: "#0078D4",
-          600: "#0063B1",
-          700: "#004E8C",
-          800: "#003A66",
-          900: "#002642",
+          50: "#F5F3F7",
+          100: "#E8E4ED",
+          200: "#D1C9DB",
+          300: "#B0A3C1",
+          400: "#8B7AA3",
+          500: "#311C3B",
+          600: "#2A1832",
+          700: "#221429",
+          800: "#1A0F21",
+          900: "#120B17",
         },
+        // Accent colors
         accent: {
-          500: "#00B7C3",
+          purple: "#8B5CF6",
+          pink: "#EC4899",
+          blue: "#3B82F6",
+          cyan: "#06B6D4",
         },
-        gray: {
-          50: "#FAFAFA",
-          100: "#F5F5F5",
-          200: "#EEEEEE",
-          300: "#E0E0E0",
-          400: "#BDBDBD",
-          500: "#9E9E9E",
-          600: "#757575",
-          700: "#616161",
-          800: "#424242",
-          900: "#212121",
-        },
+        // Semantic colors
         success: "#10B981",
         warning: "#F59E0B",
         error: "#EF4444",
         info: "#3B82F6",
       },
       fontFamily: {
-        sans: ["var(--font-jakarta)", "system-ui", "sans-serif"],
+        sans: ["var(--font-lexend)", "system-ui", "sans-serif"],
+        lexend: ["var(--font-lexend)", "sans-serif"],
       },
       fontSize: {
-        xs: ["0.75rem", { lineHeight: "1rem" }],
-        sm: ["0.875rem", { lineHeight: "1.25rem" }],
-        base: ["1rem", { lineHeight: "1.5rem" }],
-        lg: ["1.125rem", { lineHeight: "1.75rem" }],
-        xl: ["1.25rem", { lineHeight: "1.75rem" }],
-        "2xl": ["1.5rem", { lineHeight: "2rem" }],
-        "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
-        "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+        // Mobile-first responsive typography
+        xs: ["0.75rem", { lineHeight: "1rem", fontWeight: "400" }],
+        sm: ["0.875rem", { lineHeight: "1.25rem", fontWeight: "400" }],
+        base: ["1rem", { lineHeight: "1.5rem", fontWeight: "400" }],
+        lg: ["1.125rem", { lineHeight: "1.75rem", fontWeight: "400" }],
+        xl: ["1.25rem", { lineHeight: "1.875rem", fontWeight: "500" }],
+        "2xl": ["1.5rem", { lineHeight: "2rem", fontWeight: "600" }],
+        "3xl": ["1.875rem", { lineHeight: "2.25rem", fontWeight: "700" }],
+        "4xl": ["2.25rem", { lineHeight: "2.5rem", fontWeight: "700" }],
+        "5xl": ["3rem", { lineHeight: "1.2", fontWeight: "700" }],
+        "6xl": ["3.75rem", { lineHeight: "1.1", fontWeight: "800" }],
+        "7xl": ["4.5rem", { lineHeight: "1", fontWeight: "800" }],
       },
       spacing: {
         "1": "0.25rem",
@@ -84,6 +91,9 @@ const config: Config = {
         "fade-in": "fadeIn 0.3s ease-in-out",
         "slide-in": "slideIn 0.3s ease-out",
         "spin-slow": "spin 3s linear infinite",
+        "aurora": "aurora 60s linear infinite",
+        "shimmer": "shimmer 2s linear infinite",
+        "glow": "glow 2s ease-in-out infinite alternate",
       },
       keyframes: {
         fadeIn: {
@@ -93,6 +103,18 @@ const config: Config = {
         slideIn: {
           "0%": { transform: "translateY(-10px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        aurora: {
+          "0%, 100%": { transform: "translateX(-50%) translateY(-50%) rotate(0deg)" },
+          "50%": { transform: "translateX(-50%) translateY(-50%) rotate(180deg)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-1000px 0" },
+          "100%": { backgroundPosition: "1000px 0" },
+        },
+        glow: {
+          "0%": { boxShadow: "0 0 20px rgba(139, 92, 246, 0.5)" },
+          "100%": { boxShadow: "0 0 40px rgba(139, 92, 246, 0.8)" },
         },
       },
     },

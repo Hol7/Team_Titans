@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-// import { Source_Sans_3 } from "next/font/google";
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Lexend } from 'next/font/google';
 import "./globals.css";
 
-// const sourceSansPro = Source_Sans_3({
-//   subsets: ["latin"],
-//   weight: ["300", "400", "600", "700"],
-//   variable: "--font-source-sans-pro",
-// });
-
-const jakarta = Plus_Jakarta_Sans({
+const lexend = Lexend({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-jakarta',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-lexend',
   display: 'swap',
 });
 
@@ -29,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${jakarta.className} font-sans  antialiased`}
+        className={`${lexend.variable} font-sans antialiased`}
       >
         {children}
       </body>
