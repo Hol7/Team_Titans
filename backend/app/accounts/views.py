@@ -70,7 +70,7 @@ def create_user(request):
             firstName=data.get('firstName'),
             lastName=data.get('lastName'),
             phoneNumber=data.get('phoneNumber', ''),
-            role=data.get('role', User.Role.EMPLOYEE)
+            role=data.get('role')
         )
         return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
     except Exception as e:
@@ -113,7 +113,7 @@ def import_users_csv(request):
                     firstName=row['firstName'],
                     lastName=row['lastName'],
                     phoneNumber=row.get('phoneNumber', ''),
-                    role=row.get('role', User.Role.EMPLOYEE)
+                    role=row.get('role')
                 )
                 created_users.append(UserSerializer(user).data)
                 

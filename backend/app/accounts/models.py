@@ -11,6 +11,7 @@ class User(AbstractUser):
         LUFFY = "luffy", "Luffy"
         KIRA = "kira", "Kira"
         JARVIS = "jarvis", "Jarvis"
+        CYBER = "cyber", "Cyber"
     
     username = models.CharField(max_length=50, unique=True, blank=False)
     lastName = models.CharField(max_length=200)
@@ -68,6 +69,10 @@ class User(AbstractUser):
     def is_jarvis(self):
         """Vérifie si l'utilisateur est Jarvis"""
         return self.role == self.Role.JARVIS
+    
+    def is_cyber(self):
+        """Vérifie si l'utilisateur est Cyber"""
+        return self.role == self.Role.CYBER
     
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"

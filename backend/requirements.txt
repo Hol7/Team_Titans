@@ -36,3 +36,7 @@ iniconfig
 packaging
 pluggy
 Pygments
+
+# QR Code Generation
+qrcode
+pillow

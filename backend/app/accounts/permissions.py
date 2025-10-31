@@ -16,7 +16,7 @@ Rôles:
 - Kira
 - Jarvis
 """
-
+from rest_framework.permissions import BasePermission
 from rest_framework import permissions
 from .models import User
 
@@ -112,6 +112,20 @@ class IsJarvis(permissions.BasePermission):
             request.user and 
             request.user.is_authenticated and 
             request.user.is_jarvis()
+        )
+
+class IsCyber(permissions.BasePermission):
+    """
+    Permission pour Cyber
+    Générer les codes qr pour le pointage
+    """
+    message = "Accès refusé. Fonctionnalité réservée à Cyber."
+    
+    def has_permission(self, request, view):
+        return (
+            request.user and 
+            request.user.is_authenticated and 
+            request.user.is_cyber()
         )
 
 
@@ -269,6 +283,21 @@ class CanManageLogs(permissions.BasePermission):
             return True
         
         return False
+    
+class CanGenerateQRCode(BasePermission):
+    """
+    Permission : autorise uniquement le rôle 'Cyber' à générer les QR codes
+    de pointage (utilisés pour les arrivées et départs des employés).
+    """
+
+    def has_permission(self, request, view):
+        if not request.user or not request.user.is_authenticated:
+            return False
+        
+        if request.user.is_cyber():
+            return True
+
+        return False
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -297,7 +326,7 @@ class RoleBasedPermission(permissions.BasePermission):
     
     # Mapping des actions vers les rôles autorisés
     ROLE_PERMISSIONS = {
-        'list': [User.Role.GCA, User.Role.CA, User.Role.KIRA, User.Role.JARVIS, User.Role.LUFFY],
+        'list': [User.Role.GCA, User.Role.CA, User.Role.KIRA, User.Role.JARVIS, User.Role.LUFFY, User.Role.CYBER],
         'retrieve': [User.Role.GCA, User.Role.CA, User.Role.KIRA, User.Role.JARVIS, User.Role.LUFFY],
         'create': [User.Role.GCA, User.Role.CA],
         'update': [User.Role.GCA, User.Role.CA, User.Role.LUFFY],

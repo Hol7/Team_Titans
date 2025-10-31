@@ -29,3 +29,17 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.status} ({self.date})"
+
+# 🔹 Pour tracer les QR Codes générés par le Cyber
+class AttendanceQRCode(models.Model):
+    code_id = models.CharField(max_length=64, unique=True)
+    generated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    expires_at = models.DateTimeField()
+    is_active = models.BooleanField(default=True)
+
+    def is_valid(self):
+        return self.is_active and timezone.now() < self.expires_at
+
+    def __str__(self):
+        return f"QR Code {self.code_id} - actif={self.is_active}"
