@@ -26,7 +26,7 @@ Application native pour **employés** :
 - Validation biométrique (empreinte/face) ou manuelle  
 - Clock-in / Clock-out instantané
 
----
+--
 
 
 
