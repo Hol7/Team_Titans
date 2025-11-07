@@ -1,142 +1,141 @@
-from rest_framework import status, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from django.contrib.auth import get_user_model
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+
+from app.accounts.permissions import CanManageTeams, CanManageTeamMembers
+from app.accounts.middleware import log_security_event
 from .models import Team
 from .serializers import TeamSerializer
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# ============================================
-# GCA/CA ACTIONS
-# ============================================
 
-@api_view(["GET"])
-@permission_classes([permissions.IsAdminUser])
+# ========================
+# 🔹 Vues pour le CA
+# ========================
+
+@api_view(['GET'])
+@permission_classes([CanManageTeams])
 def list_teams(request):
-    """List all teams"""
     teams = Team.objects.all()
     serializer = TeamSerializer(teams, many=True)
-    return Response({"message": "Teams retrieved successfully.", "data": serializer.data})
+    return Response(serializer.data)
 
 
-@api_view(["POST"])
-@permission_classes([permissions.IsAdminUser])
+@api_view(['POST'])
+@permission_classes([CanManageTeams])
 def create_team(request):
-    """Create a new team"""
     serializer = TeamSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response({"message": "Team created successfully.", "data": serializer.data}, status=status.HTTP_201_CREATED)
+        team = serializer.save()
+        log_security_event(
+            user=request.user,
+            action='team_create',
+            resource_type='Team',
+            resource_id=team.id,
+            details={"team_name": team.name},
+            ip_address=request.META.get('REMOTE_ADDR', '0.0.0.0')
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["POST"])
-@permission_classes([permissions.IsAdminUser])
+@api_view(['PUT'])
+@permission_classes([CanManageTeams])
 def assign_manager(request, team_id):
-    """Assign a manager to a specific team"""
-    try:
-        team = Team.objects.get(id=team_id)
-    except Team.DoesNotExist:
-        return Response({"error": "Team not found."}, status=status.HTTP_404_NOT_FOUND)
+    team = get_object_or_404(Team, id=team_id)
+    manager_id = request.data.get('manager_id')
 
-    manager_id = request.data.get("manager_id")
     if not manager_id:
-        return Response({"error": "manager_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "manager_id requis."}, status=status.HTTP_400_BAD_REQUEST)
 
-    try:
-        manager = User.objects.get(id=manager_id)
-    except User.DoesNotExist:
-        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+    manager = get_object_or_404(User, id=manager_id)
 
-    if Team.objects.filter(manager=manager).exists():
-        return Response({"error": "This user already manages another team."}, status=status.HTTP_400_BAD_REQUEST)
+    if not manager.is_luffy():
+        return Response({"error": "Cet utilisateur n'est pas un Luffy."}, status=status.HTTP_400_BAD_REQUEST)
 
     team.manager = manager
     team.save()
-    return Response({"message": f"Manager '{manager.username}' assigned to team '{team.name}'."})
+
+    log_security_event(
+        user=request.user,
+        action='team_update',
+        resource_type='Team',
+        resource_id=team.id,
+        details={"assigned_manager": manager.username},
+        ip_address=request.META.get('REMOTE_ADDR', '0.0.0.0')
+    )
+
+    return Response({"message": f"{manager.username} assigné comme manager de {team.name}"})
 
 
-@api_view(["POST"])
-@permission_classes([permissions.IsAdminUser])
-def remove_manager(request, team_id):
-    """Remove a manager from a team"""
-    try:
-        team = Team.objects.get(id=team_id)
-    except Team.DoesNotExist:
-        return Response({"error": "Team not found."}, status=status.HTTP_404_NOT_FOUND)
+@api_view(['DELETE'])
+@permission_classes([CanManageTeams])
+def delete_team(request, team_id):
+    team = get_object_or_404(Team, id=team_id)
+    team_name = team.name
+    team.delete()
 
-    if not team.manager:
-        return Response({"message": "This team has no assigned manager."})
+    log_security_event(
+        user=request.user,
+        action='team_delete',
+        resource_type='Team',
+        resource_id=team_id,
+        details={"team_name": team_name},
+        ip_address=request.META.get('REMOTE_ADDR', '0.0.0.0')
+    )
 
-    manager_name = team.manager.username
-    team.manager = None
-    team.save()
-    return Response({"message": f"Manager '{manager_name}' removed from team '{team.name}'."})
+    return Response({"message": f"Équipe '{team_name}' supprimée."}, status=status.HTTP_200_OK)
 
+# ========================
+# 🔹 Vues pour Luffy
+# ========================
 
-# ============================================
-# 🔹 MANAGER ACTIONS
-# ============================================
+@api_view(['POST'])
+@permission_classes([CanManageTeamMembers])
+def add_member(request, team_id):
+    team = get_object_or_404(Team, id=team_id)
 
-@api_view(["GET"])
-@permission_classes([permissions.IsAuthenticated])
-def get_my_team(request):
-    """Retrieve the team managed by the current user"""
-    try:
-        team = Team.objects.get(manager=request.user)
-    except Team.DoesNotExist:
-        return Response({"error": "You are not managing any team."}, status=status.HTTP_404_NOT_FOUND)
+    if team.manager != request.user:
+        return Response({"error": "Vous ne pouvez gérer que votre propre équipe."}, status=status.HTTP_403_FORBIDDEN)
 
-    serializer = TeamSerializer(team)
-    return Response({"message": "Team retrieved successfully.", "data": serializer.data})
-
-
-@api_view(["POST"])
-@permission_classes([permissions.IsAuthenticated])
-def add_member(request):
-    """Add a member to the team managed by the current user"""
-    try:
-        team = Team.objects.get(manager=request.user)
-    except Team.DoesNotExist:
-        return Response({"error": "You are not managing any team."}, status=status.HTTP_404_NOT_FOUND)
-
-    user_id = request.data.get("user_id")
-    if not user_id:
-        return Response({"error": "user_id is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-    try:
-        member = User.objects.get(id=user_id)
-    except User.DoesNotExist:
-        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
-
-    if member in team.members.all():
-        return Response({"message": "This user is already a member of your team."})
-
+    member_id = request.data.get("member_id")
+    member = get_object_or_404(User, id=member_id)
     team.members.add(member)
-    return Response({"message": f"User '{member.username}' added to team '{team.name}'."})
+
+    log_security_event(
+        user=request.user,
+        action='team_update',
+        resource_type='Team',
+        resource_id=team.id,
+        details={"added_member": member.username},
+        ip_address=request.META.get('REMOTE_ADDR', '0.0.0.0')
+    )
+
+    return Response({"message": f"{member.username} ajouté à {team.name}."})
 
 
-@api_view(["DELETE"])
-@permission_classes([permissions.IsAuthenticated])
-def remove_member(request):
-    """Remove a member from the team managed by the current user"""
-    try:
-        team = Team.objects.get(manager=request.user)
-    except Team.DoesNotExist:
-        return Response({"error": "You are not managing any team."}, status=status.HTTP_404_NOT_FOUND)
+@api_view(['DELETE'])
+@permission_classes([CanManageTeamMembers])
+def remove_member(request, team_id):
+    team = get_object_or_404(Team, id=team_id)
 
-    user_id = request.data.get("user_id")
-    if not user_id:
-        return Response({"error": "user_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+    if team.manager != request.user:
+        return Response({"error": "Vous ne pouvez gérer que votre propre équipe."}, status=status.HTTP_403_FORBIDDEN)
 
-    try:
-        member = User.objects.get(id=user_id)
-    except User.DoesNotExist:
-        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
-
-    if member not in team.members.all():
-        return Response({"message": "This user is not part of your team."})
-
+    member_id = request.data.get("member_id")
+    member = get_object_or_404(User, id=member_id)
     team.members.remove(member)
-    return Response({"message": f"User '{member.username}' removed from team '{team.name}'."})
+
+    log_security_event(
+        user=request.user,
+        action='team_update',
+        resource_type='Team',
+        resource_id=team.id,
+        details={"removed_member": member.username},
+        ip_address=request.META.get('REMOTE_ADDR', '0.0.0.0')
+    )
+
+    return Response({"message": f"{member.username} retiré de {team.name}."})

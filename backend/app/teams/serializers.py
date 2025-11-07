@@ -1,21 +1,17 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
 from .models import Team
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
-    """Serialize basic user info"""
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email']
-
-
 class TeamSerializer(serializers.ModelSerializer):
-    """Serialize team data with manager and members"""
-    manager = UserSerializer(read_only=True)
-    members = UserSerializer(many=True, read_only=True)
+    manager_name = serializers.CharField(source='manager.username', read_only=True)
+    member_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Team
-        fields = ['id', 'name', 'manager', 'members', 'created_at']
+        fields = ['id', 'name', 'manager', 'manager_name', 'member_count', 'members', 'created_at']
+        read_only_fields = ['created_at']
+
+    def get_member_count(self, obj):
+        return obj.members.count()
