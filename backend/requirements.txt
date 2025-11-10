@@ -1,5 +1,42 @@
-Django==5.1.1
-mysqlclient==2.2.4
+# Core Django & REST Framework
+asgiref
+Django
+djangorestframework
+python-dotenv
+
+# API Documentation
+drf-spectacular
+
+# CORS Support
+django-cors-headers
+
+# Authentication & JWT
+djangorestframework-simplejwt
+PyJWT
+
+# Security Tools
+bleach
+django-ratelimit
+django-defender
+django-axes
+argon2-cffi
+
+# Security Analysis
+bandit
+safety
+
+# Testing
+coverage
 pytest
 pytest-django
-coverage
+pytest-cov
+
+# Development
+iniconfig
+packaging
+pluggy
+Pygments
+
+# QR Code Generation
+qrcode
+pillow
