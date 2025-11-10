@@ -160,6 +160,7 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # Swagger/OpenAPI
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
     'EXCEPTION_HANDLER': 'app.accounts.exceptions.custom_exception_handler',  # Gestion d'erreurs personnalisée
@@ -174,6 +175,41 @@ REST_FRAMEWORK = {
     }
 }
 APPEND_SLASH=False
+
+# Spectacular (Swagger/OpenAPI) Configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'TMTT API Documentation',
+    'DESCRIPTION': 'Team Management & Time Tracking - API REST avec système de sécurité RACI',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'CONTACT': {
+        'name': 'Team Titans',
+        'email': 'contact@tmtt.com',
+    },
+    'LICENSE': {
+        'name': 'EPITECH MSc Pro',
+    },
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'Endpoints d\'authentification JWT'},
+        {'name': 'Users', 'description': 'Gestion des utilisateurs et rôles RACI'},
+        {'name': 'Teams', 'description': 'Gestion des équipes'},
+        {'name': 'Attendance', 'description': 'Gestion des présences'},
+        {'name': 'Reports', 'description': 'Génération de rapports'},
+    ],
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': '/api/v1/',
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+        'filter': True,
+    },
+    'SERVERS': [
+        {'url': 'http://localhost:8000', 'description': 'Development server'},
+        {'url': 'https://api.tmtt.com', 'description': 'Production server'},
+    ],
+}
+
 # JWT Configuration
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv('JWT_ACCESS_TOKEN_LIFETIME_MINUTES') or '60')),

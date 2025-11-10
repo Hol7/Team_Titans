@@ -1,0 +1,419 @@
+openapi: 3.0.3
+info:
+  title: TMTT API Documentation
+  version: 1.0.0
+  description: Team Management & Time Tracking - API REST avec système de sécurité
+    RACI
+  contact:
+    name: Team Titans
+    email: contact@tmtt.com
+  license:
+    name: EPITECH MSc Pro
+paths:
+  /api/v1/arrival/:
+    post:
+      operationId: arrival_create
+      tags:
+      - arrival
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/login:
+    post:
+      operationId: auth_login_create
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/logout:
+    post:
+      operationId: auth_logout_create
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/profile:
+    get:
+      operationId: auth_profile_retrieve
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/token/refresh:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/auth/users:
+    get:
+      operationId: auth_users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+  /api/v1/auth/users/{user_id}:
+    get:
+      operationId: auth_users_retrieve
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/users/{user_id}/delete:
+    delete:
+      operationId: auth_users_delete_destroy
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/users/{user_id}/role:
+    patch:
+      operationId: auth_users_role_partial_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/users/{user_id}/update:
+    put:
+      operationId: auth_users_update_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: auth_users_update_partial_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/users/create:
+    post:
+      operationId: auth_users_create_create
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/users/import-csv:
+    post:
+      operationId: auth_users_import_csv_create
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/departure/:
+    post:
+      operationId: departure_create
+      tags:
+      - departure
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/status/:
+    get:
+      operationId: status_retrieve
+      tags:
+      - status
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/teams:
+    get:
+      operationId: teams_retrieve
+      description: List all teams
+      tags:
+      - teams
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/teams/{team_id}/assign-manager:
+    post:
+      operationId: teams_assign_manager_create
+      description: Assign a manager to a specific team
+      parameters:
+      - in: path
+        name: team_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - teams
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/teams/{team_id}/remove-manager:
+    post:
+      operationId: teams_remove_manager_create
+      description: Remove a manager from a team
+      parameters:
+      - in: path
+        name: team_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - teams
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/teams/add-member:
+    post:
+      operationId: teams_add_member_create
+      description: Add a member to the team managed by the current user
+      tags:
+      - teams
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/teams/create:
+    post:
+      operationId: teams_create_create
+      description: Create a new team
+      tags:
+      - teams
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/teams/my-team:
+    get:
+      operationId: teams_my_team_retrieve
+      description: Retrieve the team managed by the current user
+      tags:
+      - teams
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/teams/remove-member:
+    delete:
+      operationId: teams_remove_member_destroy
+      description: Remove a member from the team managed by the current user
+      tags:
+      - teams
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    RoleEnum:
+      enum:
+      - gca
+      - ca
+      - pirates
+      - luffy
+      - kira
+      - jarvis
+      type: string
+      description: |-
+        * `gca` - GCA
+        * `ca` - CA
+        * `pirates` - Pirates
+        * `luffy` - Luffy
+        * `kira` - Kira
+        * `jarvis` - Jarvis
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          maxLength: 50
+        firstName:
+          type: string
+          maxLength: 200
+        lastName:
+          type: string
+          maxLength: 200
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phoneNumber:
+          type: string
+          maxLength: 15
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+servers:
+- url: http://localhost:8000
+  description: Development server
+- url: https://api.tmtt.com
+  description: Production server
+tags:
+- name: Authentication
+  description: Endpoints d'authentification JWT
+- name: Users
+  description: Gestion des utilisateurs et rôles RACI
+- name: Teams
+  description: Gestion des équipes
+- name: Attendance
+  description: Gestion des présences
+- name: Reports
+  description: Génération de rapports
