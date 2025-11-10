@@ -71,8 +71,4 @@ services:
 
 volumes:
   db_data:
-  pgadmin_data:
-
-networks:
-  dev_network:
-    driver: bridge
+  #backend_data:  
