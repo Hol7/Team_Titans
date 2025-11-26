@@ -27,7 +27,7 @@ export const UserForm = ({ onSuccess, onCancel }: UserFormProps) => {
       email: '',
       phone: '',
       password: '',
-      role: 'employee',
+      role: 'pirates',
       teamId: '',
     },
     validationSchema: toFormikValidationSchema(createUserSchema),
@@ -42,8 +42,9 @@ export const UserForm = ({ onSuccess, onCancel }: UserFormProps) => {
   });
 
   const roleOptions = [
-    { value: 'employee', label: 'Employé' },
-    { value: 'manager', label: 'Manager' },
+    { value: 'pirates', label: 'Pirates' },
+    { value: 'luffy', label: 'Luffy' },
+    { value: 'gca', label: 'GCA' },
   ];
 
   const teamOptions = [

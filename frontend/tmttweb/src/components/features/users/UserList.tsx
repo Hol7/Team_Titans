@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Icon } from '@iconify/react';
 import { Badge } from '@/components/ui/badge/Badge';
 import { Button } from '@/components/ui/button/Button';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table/Table';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table/table';
 import { Modal, ModalFooter } from '@/components/ui/modal/Modal';
 import { useUsers, useDeleteUser } from '@/lib/hooks/users';
 import { User } from '@/types';
@@ -81,8 +81,8 @@ export const UserList = () => {
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
               <TableCell>
-                <Badge variant={user.role === 'manager' ? 'primary' : 'default'}>
-                  {user.role === 'manager' ? 'Manager' : 'Employé'}
+                <Badge variant={(user.role === 'luffy' || user.role === 'gca') ? 'primary' : 'default'}>
+                  {user.role === 'luffy' ? 'Luffy' : user.role === 'gca' ? 'GCA' : 'Pirates'}
                 </Badge>
               </TableCell>
               <TableCell>

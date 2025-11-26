@@ -45,7 +45,7 @@ export const Navbar = () => {
                 <p className="text-sm font-medium text-gray-900">
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+                <p className="text-xs text-gray-500">{user ? (user.role === 'luffy' ? 'Luffy' : user.role === 'gca' ? 'GCA' : 'Pirates') : ''}</p>
               </div>
               <Icon 
                 icon="mdi:chevron-down" 

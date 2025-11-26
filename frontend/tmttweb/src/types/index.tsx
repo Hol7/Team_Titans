@@ -5,7 +5,7 @@ export interface User {
     lastName: string;
     email: string;
     phone: string;
-    role: 'employee' | 'manager' | 'admin';
+    role: 'pirates' | 'luffy' | 'gca';
     teamId?: string;
     createdAt: string;
     updatedAt: string;
@@ -17,7 +17,7 @@ export interface User {
     email: string;
     phone: string;
     password: string;
-    role: 'employee' | 'manager' | 'admin';
+    role: 'pirates' | 'luffy' | 'gca';
     teamId?: string;
   }
   

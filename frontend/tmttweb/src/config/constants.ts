@@ -1,5 +1,5 @@
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Time Management';
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1/auth';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://104.154.249.250:8000/api/v1/auth';
 
 // Routes
 export const ROUTES = {
@@ -93,8 +93,9 @@ export const STORAGE_KEYS = {
 
 // Roles
 export const ROLES = {
-  EMPLOYEE: 'employee',
-  MANAGER: 'manager',
+  PIRATES: 'pirates', // employé
+  LUFFY: 'luffy',     // manager
+  GCA: 'gca',         // admin
 } as const;
 
 // Clock Types

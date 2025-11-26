@@ -18,7 +18,7 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       token: null,
-      isAuthenticated: false,
+      isAuthenticated: true,
       isManager: true,
 
       setAuth: (user, token) => {
@@ -29,7 +29,7 @@ export const useAuthStore = create<AuthState>()(
           user,
           token,
           isAuthenticated: true,
-          isManager: user.role === 'admin' || user.role === 'manager' ,
+          isManager: user.role === 'gca' || user.role === 'luffy',
         });
       },
 
